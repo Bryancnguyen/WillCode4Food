@@ -4,7 +4,8 @@ var webpack = require('webpack');
 module.exports = {
   devtool: 'source-map',
   entry: [
-    './client/bryancnguyen'
+    'webpack-hot-middleware/client',
+    './client/feelthetweet'
   ],
   output: {
     path: path.join(__dirname, 'dist'),
@@ -12,31 +13,32 @@ module.exports = {
     publicPath: '/static/'
   },
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': "'production'"
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
-    })
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
+    new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+        })
   ],
   module: {
     loaders: [
     // js
     {
       test: /\.js$/,
-      loaders: ['babel'],
+      loaders: ['babel-loader'],
       include: path.join(__dirname, 'client')
     },
+    {
+      test: /\.css$/,
+      loaders: ["style-loader!css-loader"],
+      include: path.join(__dirname, 'client')
+    },
+
     // CSS
     {
-      test: /\.styl$/,
-      include: path.join(__dirname, 'client'),
-      loader: 'style-loader!css-loader!stylus-loader'
+      test: /\.scss$/,
+      loaders: ["style", "css", "sass"],
+      include: path.join(__dirname, 'client')
     }
     ]
   }
