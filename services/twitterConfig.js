@@ -4,7 +4,7 @@ const extractTweetText = function(body) {
   return body.statuses.map( tweet => tweet.text )
 }
 
-exports.queryTwitter = function(query) {
+exports.queryTwitter = function(query, queryWatson) {
 
   var client = new Twitter({
     consumer_key: 'kYMxhMF25J6pFwpsQOJ8HgIZO',
@@ -16,11 +16,9 @@ exports.queryTwitter = function(query) {
   let resultingTweets;
 
   console.log('Pinging twitter for  ', query);
-  client.get('search/tweets', {q: query, count: 3}, function(error, tweets, response) {
+  client.get('search/tweets', {q: query, count: 10}, function(error, tweets, response) {
     if(error) console.log(error);
     resultingTweets = extractTweetText(tweets);
-    console.log(resultingTweets);
+    queryWatson(resultingTweets);
   });
-
-  return resultingTweets; 
 }

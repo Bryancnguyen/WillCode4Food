@@ -3,11 +3,15 @@ var express = require('express');
 var webpack = require('webpack');
 var config = require('./webpack.config.dev');
 var Twitter = require('./services/twitterConfig');
+var Watson = require('./services/watsonConfig');
 
 var app = express();
 var compiler = webpack(config);
 
-Twitter.queryTwitter("#superbowl");
+query = "#superbowl";
+
+Twitter.queryTwitter(query, Watson.queryWatson);
+
 
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
